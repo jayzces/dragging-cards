@@ -1,0 +1,31 @@
+body {
+    display: grid;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    margin: auto;
+    width: 100%;
+    max-width: 960px;
+}
+
+.column {
+    background-color: hsl(0, 0%, 90%);
+    margin: 0 15px;
+    padding: 15px;
+    max-width: 50%;
+    width: 360px;
+    height: 560px;
+    border-radius: 10px;
+}
+
+.card {
+    background-color: white;
+    padding-top: calc(100% / 16 * 9);
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.10);
+}
