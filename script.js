@@ -5,7 +5,7 @@ card.addEventListener('dragstart', e => {
     e.preventDefault()
 })
 
-card.addEventListener('mousedown', (e) => {
+card.addEventListener('mousedown', e => {
     if (e.button != 0) return
 
     let cardParent = card.parentElement
@@ -34,29 +34,20 @@ card.addEventListener('mousedown', (e) => {
 
     document.addEventListener('mousemove', onMouseMove)
 
-    card.onmouseup = () => {
-        document.removeEventListener('mousemove', onMouseMove)
+    card.onmouseup = e => {
 
         columns.forEach(column => {
+            let container = column.getBoundingClientRect()
             if (column != cardParent) {
-                cardParent = column
-                console.log(cardParent)
-                column.addEventListener('mouseover', moveCard(column))
-                column.removeEventListener('mouseover', moveCard)
-            } else {
-
+                if (e.pageX >= container.left && e.pageX <= container.right &&
+                    e.pageY >= container.top && e.pageY <= container.bottom) {
+                    column.append(card)
+                }
             }
         })
 
+        document.removeEventListener('mousemove', onMouseMove)
         card.onmouseup = null
-        resetStyles()
-    }
-
-    let moveCard = parent => {
-        parent.append(card)
-    }
-
-    let resetStyles = () => {
         card.style.position = null
         card.style.zIndex = null
         card.style.left = null
