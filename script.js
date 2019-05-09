@@ -1,56 +1,59 @@
-const card = document.querySelector('.card')
+const cards = document.querySelectorAll('.card')
 const columns = document.querySelectorAll('.column')
 
-card.addEventListener('dragstart', e => {
-    e.preventDefault()
-})
+cards.forEach(card => {
 
-card.addEventListener('mousedown', e => {
-    if (e.button != 0) return
+    card.addEventListener('dragstart', e => {
+        e.preventDefault()
+    })
 
-    let cardParent = card.parentElement
+    card.addEventListener('mousedown', e => {
+        if (e.button != 0) return
 
-    // reiterate card dimensions, and remove padding
-    card.style.width = `${card.offsetWidth}px`
-    card.style.height = `${card.offsetHeight}px`
-    card.style.padding = 0
+        let cardParent = card.parentElement
 
-    let shiftX = e.clientX - card.getBoundingClientRect().left
-    let shiftY = e.clientY - card.getBoundingClientRect().top
+        // reiterate card dimensions, and remove padding
+        card.style.width = `${card.offsetWidth}px`
+        card.style.height = `${card.offsetHeight}px`
+        card.style.padding = 0
 
-    card.style.position = 'fixed'
-    card.style.zIndex = 10
+        let shiftX = e.clientX - card.getBoundingClientRect().left
+        let shiftY = e.clientY - card.getBoundingClientRect().top
 
-    let moveAt = (x, y) => {
-        card.style.left = `${x - shiftX}px`
-        card.style.top = `${y - shiftY}px`
-    }
+        card.style.position = 'fixed'
+        card.style.zIndex = 10
 
-    moveAt(e.pageX, e.pageY)
+        let moveAt = (x, y) => {
+            card.style.left = `${x - shiftX}px`
+            card.style.top = `${y - shiftY}px`
+        }
 
-    let onMouseMove = e => {
         moveAt(e.pageX, e.pageY)
-    }
 
-    document.addEventListener('mousemove', onMouseMove)
+        let onMouseMove = e => {
+            moveAt(e.pageX, e.pageY)
+        }
 
-    card.onmouseup = e => {
+        document.addEventListener('mousemove', onMouseMove)
 
-        columns.forEach(column => {
-            let container = column.getBoundingClientRect()
-            if (column != cardParent) {
-                if (e.pageX >= container.left && e.pageX <= container.right &&
-                    e.pageY >= container.top && e.pageY <= container.bottom) {
-                    column.append(card)
+        card.onmouseup = e => {
+
+            columns.forEach(column => {
+                let container = column.getBoundingClientRect()
+                if (column != cardParent) {
+                    if (e.pageX >= container.left && e.pageX <= container.right
+                        && e.pageY >= container.top && e.pageY <= container.bottom) {
+                        column.append(card)
+                    }
                 }
-            }
-        })
+            })
 
-        document.removeEventListener('mousemove', onMouseMove)
-        card.onmouseup = null
-        card.style.position = null
-        card.style.zIndex = null
-        card.style.left = null
-        card.style.top = null
-    }
+            document.removeEventListener('mousemove', onMouseMove)
+            card.onmouseup = null
+            card.style.position = null
+            card.style.zIndex = null
+            card.style.left = null
+            card.style.top = null
+        }
+    })
 })
